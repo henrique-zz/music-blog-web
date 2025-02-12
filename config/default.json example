@@ -4,7 +4,7 @@
     },
     "db": {
         "host": "localhost",
-        "database": "fornatto_db_2",
+        "database": "blog_db",
         "user": "root",
         "password": ""
     }

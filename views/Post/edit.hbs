@@ -1,0 +1,45 @@
+{{!-- Edit de post --}}
+
+<div class="container">
+    <form method="post" action="/post/{{post.id}}?_method=put">
+        <div class="my-3">
+            <label for="id-input-id" class="form-label">ID</label>
+            <input type="text" id="id-input-id" value="{{post.id}}" class="form-control" disabled>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-album" class="form-label">Álbum</label>
+            <input type="text" name="album" id="id-input-album" value="{{post.album}}" class="form-control"
+                placeholder="Digite o nome do album do post. Ex: {{post.album}}" required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-texto" class="form-label">Texto</label>
+            <input type="text" name="texto" id="id-input-texto" value="{{post.texto}}"
+                class="form-control" placeholder="Digite um texto para o post. Ex: {{post.texto}}"
+                required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-curtidas" class="form-label">Curtidas</label>
+            <input type="text" name="curtidas" id="id-input-curtidas" value="{{post.curtidas}}" class="form-control"
+                placeholder="Digite o número de curtidas para o post. Ex: {{post.curtidas}}" required>
+        </div>
+
+         <div class="my-3">
+            <label for="id-input-dataPostagem" class="form-label">Data de Postagem</label>
+            <input type="text" name="dataPostagem" id="id-input-dataPostagem" value="{{post.dataPostagem}}" class="form-control"
+                placeholder="Digite a data de postagem do  post. Ex: {{post.dataPostagem}}" required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-idUser" class="form-label">ID do Usuário</label>
+            <input type="text" id="id-input-idUser" value="{{post.Usuario_id}}" class="form-control" disabled>
+        </div>
+
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <a href="/" class="btn btn-primary">Voltar</a>
+        </div>
+    </form>
+</div>

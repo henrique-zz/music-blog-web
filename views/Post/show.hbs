@@ -1,0 +1,47 @@
+{{!-- Show de post --}}
+
+<div class="container">
+    <div class="my-3">
+        <label for="id-input-id" class="form-label">ID</label>
+        <input type="text" id="id-input-id" value="{{post.id}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-album" class="form-label">Album</label>
+        <input type="text" id="id-input-album" value="{{post.album}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-texto" class="form-label">Texto</label>
+        <input type="text" id="id-input-texto" value="{{post.texto}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-curtidas" class="form-label">Curtidas</label>
+        <input type="text" id="id-input-curtidas" value="{{post.curtidas}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-dataPostagem" class="form-label">Data Postagem</label>
+        <input type="text" id="id-input-dataPostagem" value="{{post.dataPostagem}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-Usuario_id" class="form-label">ID do Usuário</label>
+        <input type="text" id="id-input-Usuario_id" value="{{post.Usuario_id}}" class="form-control" disabled>
+    </div>
+
+
+
+    <div class="my-3">
+        <a href="/post/{{post.id}}/edit" class="btn btn-primary">Editar</a>
+    </div>
+
+    <div class="my-3">
+        <a href="/post/create" class="btn btn-primary">Criar novo Post</a>
+    </div>
+
+    <div class="my-3">
+        <a href="/" class="btn btn-primary">Voltar</a>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+{{!-- Show de Usuario --}}
+
+<div class="container">
+    <div class="my-3">
+        <label for="id-input-id" class="form-label">ID</label>
+        <input type="text" id="id-input-id" value="{{usuario.id}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-nome" class="form-label">Nome</label>
+        <input type="text" id="id-input-nome" value="{{usuario.nome}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-senha" class="form-label">Senha</label>
+        <input type="text" id="id-input-senha" value="{{usuario.senha}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-seguidores" class="form-label">Seguidores</label>
+        <input type="text" id="id-input-seguidores" value="{{usuario.seguidores}}" class="form-control" disabled>
+    </div>
+
+    <div class="my-3">
+        <label for="id-input-dataCriacao" class="form-label">Data Criação</label>
+        <input type="text" id="id-input-dataCriacao" value="{{usuario.dataCriacao}}" class="form-control" disabled>
+    </div>
+
+
+    <div class="my-3">
+        <a href="/usuario/{{usuario.id}}/edit" class="btn btn-primary">Editar</a>
+    </div>
+
+    <div class="my-3">
+        <a href="/" class="btn btn-primary">Voltar</a>
+    </div>
+</div>

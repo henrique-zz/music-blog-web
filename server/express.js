@@ -4,6 +4,7 @@ const HbsConfigureCustomHelpers = require("../hbs_config/HbsConfigureCustomHelpe
 const express = require("express");
 const methodOverride = require("method-override");
 const session = require("express-session");
+const csurf = require('csurf');
 const config = require("config");
 const webRoutes = require("../routes/web");
 const apiRoutes = require("../routes/api");
@@ -37,6 +38,8 @@ app.use(session({
 app.use(webRoutes);
 // Middleware - Utilizo um arquivo externo para definir as rotas API
 app.use(apiRoutes);
+
+app.use(csurf());
 
 // exporta o objeto app configurado
 module.exports = app;

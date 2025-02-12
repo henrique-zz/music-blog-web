@@ -1,0 +1,36 @@
+{{!-- Edit de usuario --}}
+
+<div class="container">
+    <form method="usuario" action="/usuario/{{usuario.id}}?_method=put">
+        <div class="my-3">
+            <label for="id-input-id" class="form-label">ID</label>
+            <input type="text" id="id-input-id" value="{{usuario.id}}" class="form-control" disabled>
+        </div>
+        <div class="my-3">
+            <label for="id-input-nome" class="form-label">Nome</label>
+            <input type="text" name="nome" id="id-input-nome" value="{{usuario.nome}}" class="form-control"
+                placeholder="Digite um nome para o usuário. Ex: {{usuario.nome}}" required>
+        </div>
+        <div class="my-3">
+            <label for="id-input-senha" class="form-label">Senha</label>
+            <input type="text" name="senha" id="id-input-senha" value="{{usuario.senha}}" class="form-control"
+                placeholder="Digite a senha para o usuario. Ex: {{usuario.senha}}" required>
+        </div>
+        <div class="my-3">
+            <label for="id-input-seguidores" class="form-label">Seguidores</label>
+            <input type="text" name="seguidores" id="id-input-seguidores" value="{{usuario.seguidores}}" class="form-control"
+                placeholder="Digite o número de seguidores do  usuario. Ex: {{usuario.seguidores}}" required>
+        </div>
+        
+        <div class="my-3">
+            <label for="id-input-dataCriacao" class="form-label">dataCriacao</label>
+            <input type="text" name="dataCriacao" id="id-input-dataCriacao" value="{{usuario.dataCriacao}}"
+                class="form-control" placeholder="Digite a data de criação da conta do usuario. Ex: {{usuario.dataCriacao}}"
+                required>
+        </div>
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <a href="/" class="btn btn-primary">Voltar</a>
+        </div>
+    </form>
+</div>

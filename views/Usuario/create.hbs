@@ -1,0 +1,41 @@
+<div class="container">
+    <h1 class="my-4">Criar Novo Post</h1>
+
+    {{#if message}}
+        <div class="alert alert-{{message.[0]}}">
+            {{message.[1]}}
+        </div>
+    {{/if}}
+
+    <form method="POST" action="/post">
+        <div class="my-3">
+            <label for="id-input-album" class="form-label">Álbum</label>
+            <input type="text" id="id-input-album" name="album" class="form-control" placeholder="Digite o nome do álbum" required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-texto" class="form-label">Texto</label>
+            <textarea id="id-input-texto" name="texto" class="form-control" placeholder="Digite o texto do post" required></textarea>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-curtidas" class="form-label">Curtidas</label>
+            <input type="number" id="id-input-curtidas" name="curtidas" class="form-control" placeholder="Digite o número de curtidas" required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-dataPostagem" class="form-label">Data de Postagem</label>
+            <input type="date" id="id-input-dataPostagem" name="dataPostagem" class="form-control" required>
+        </div>
+
+        <div class="my-3">
+            <label for="id-input-usuario_id" class="form-label">ID do Usuário</label>
+            <input type="number" id="id-input-usuario_id" name="usuario_id" class="form-control" placeholder="Digite o ID do usuário" required>
+        </div>
+
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary">Criar Post</button>
+            <a href="/post" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>

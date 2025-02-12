@@ -1,0 +1,46 @@
+<div class="container">
+    <h1 class="my-4">Postagens</h1>
+
+    {{#if message}}
+        <div class="alert alert-{{message.[0]}}">
+            {{message.[1]}}
+        </div>
+    {{/if}}
+
+    <a href="/post/create" class="btn btn-success mb-3">Criar Novo Post</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Álbum</th>
+                <th>Texto</th>
+                <th>Curtidas</th>
+                <th>Data de Postagem</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each posts}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.album}}</td>
+                    <td>{{this.texto}}</td>
+                    <td>{{this.curtidas}}</td>
+                    <td>{{this.dataPostagem}}</td>
+                    <td>
+                        <a href="/post/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
+                        <a href="/post/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="/post/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum post encontrado.</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

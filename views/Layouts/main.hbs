@@ -11,35 +11,71 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: beige;
+            font-family: 'Russo One', sans-serif;
+        }
+
+        #imagem-radio {
+            position: absolute;
+            border: 5px;
+            border-radius: 1000px;
+            top: 20px;
+            left: 20px;
+            width: 150px;
+        }
+
+        .botoes a:hover{
+            color: black;
+            font-size: larger;
+        }
+
+        .botoes{
+            background-color: pink;
+        }
+    </style>
+
 </head>
 
 <body>
+    <img id="imagem-radio" src="/img/radio.png" alt="imagem radio">
+
     <div class="container my-2">
         <div class="row text-center my-3">
             <div class="col-md-2 d-none d-md-block">
-                <img src="/img/trigo.png" alt="trigo.png">
+                <img src="/img/album2.jpg" alt="album2.jpg" class="img-fluid w-55">
             </div>
+
             <div class="col-md-8 my-auto">
-                <h1>Ristorante e Pizzaria Fornatto</h1>
+                <h1>Melodia Analisada</h1>
             </div>
+
             <div class="col-md-2 d-none d-md-block">
-                <img src="/img/trigo2.png" alt="trigo2.png">
+                <img src="/img/album.jpg" alt="album.jpg" class="img-fluid w-55 ">
             </div>
+
+            <div>
+                <h2>
+                    No nosso blog Melodia Analisada você e outros usuários podem compartilhar as suas notas de
+                    álbuns especificos, dando suas opiniões, dizendo quais são suas faixas mais e menos curtidas e
+                    mais o que você desejar!
+                </h2>
+            </div>
+
         </div>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Organização das Mesas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pedidos Inativos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/recurso">Adicionar novos recursos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Relatórios</a>
-            </li>
-        </ul>
+        <div class="botoes">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Postagens</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Sobre">Sobre o Blog</a>
+                </li>
+            </ul>
+        </div>
+        
         {{#if message}}
         <div class="alert alert-{{message.[0]}} alert-dismissible fade show my-3" role="alert">
             <strong>{{message.[1]}}</strong>

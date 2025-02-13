@@ -66,19 +66,16 @@ class PostModel {
      * Salva um objeto PostModel no banco de dados. O atributo que deve ser informado: "descricao". Os atributos: "id" "album" "texto" "curtidas" "dataPostagem" e "Usuario_id" são criados automaticamente.
      * @returns {PostModel} Retorna um objeto PostModel com as informações recém inseridas no banco de dados.
      */
+
     async save() {
-        // Gera um timestamp no formato "YYYY-MM-DD HH:MM:SS" com a data e horário atual
-        const timestamp = (new Date()).toISOString().slice(0, 19).replace('T', ' ');
-        const result = await DataBase.executeSQLQuery(`INSERT INTO post VALUES (null, ?, ?, ?);`,
-            [
-                this.descricao,
-                timestamp,
-                timestamp
-            ]
-        );
-        const tipoProduto = await TipoProdutoModel.findOne(result.insertId);
-        return tipoProduto;
+        const query = `
+                INSERT INTO Post (album, texto, curtidas, dataPostagem, Usuario_id)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+        const params = [this.album, this.texto, this.curtidas, this.dataPostagem, this.Usuario_id];
+        await DataBase.executeSQLQuery(query, params);
     }
+
 
     /**
      * Atualiza um objeto PostModel no banco de dados. O atributo que deve ser informado: "descricao". O atributo: "dataPostagem" é atualizado automaticamente. Os atributos: "id" e "dataCriacao" não são alterados.

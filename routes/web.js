@@ -1,7 +1,7 @@
 const express = require("express");
+const router = express.Router();
 const webUsuarioController = require("../controllers_web/WebUsuarioController");
 const webpostController = require("../controllers_web/WebPostController");
-const router = express.Router();
 const connection = require("../db");
 
 //SHOW para Post especifico
@@ -320,7 +320,7 @@ router.get("/usuario", (req, res) => {
 });
 
 // Rotas de post
-router.get("/post", webpostController.index);
+// router.get("/post", webpostController.index);
 router.get("/post/create", webpostController.create);
 router.post("/post", webpostController.store);
 router.get("/post/:postId", webpostController.show);

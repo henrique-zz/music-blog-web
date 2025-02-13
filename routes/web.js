@@ -146,7 +146,7 @@ router.post("/post", (req, res) => {
     const { album, texto, curtidas, dataPostagem, Usuario_id } = req.body; // Obtém os dados do formulário
 
     // Validação básica dos dados
-    if (!album || !texto || !curtidas || !dataPostagem || Usuario_id) {
+    if (!album || !texto || !curtidas || !dataPostagem || !Usuario_id) {
         req.session.message = ["danger", "Todos os campos são obrigatórios."];
         return res.redirect("/post/create");
     }

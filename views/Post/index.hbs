@@ -17,7 +17,7 @@
                 <th>Texto</th>
                 <th>Curtidas</th>
                 <th>Data de Postagem</th>
-                <th>Ações</th>
+                <th>ID do Usuário</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +28,7 @@
                     <td>{{this.texto}}</td>
                     <td>{{this.curtidas}}</td>
                     <td>{{this.dataPostagem}}</td>
+                    <td>{{this.Usuario_id}}</td>
                     <td>
                         <a href="/post/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
                         <a href="/post/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>

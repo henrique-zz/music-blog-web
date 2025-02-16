@@ -18,6 +18,23 @@
             font-family: 'Russo One', sans-serif;
         }
 
+        body::after {
+            content: "";
+            background-color: pink;
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 40px;
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
         #imagem-radio {
             position: absolute;
             border: 5px;
@@ -27,14 +44,26 @@
             width: 150px;
         }
 
-        .botoes a:hover{
+        .link-titulo{
+            color: inherit;
+            transition: color 0.3s ease, font-size 0.3s ease;
+        }
+
+        .link-titulo:hover {
+            color: #ff0000;
+            font-size: larger;
+        }
+
+        .botoes {
+            background-color: pink;
+        }
+
+        .botoes a:hover {
             color: black;
             font-size: larger;
         }
 
-        .botoes{
-            background-color: pink;
-        }
+        
     </style>
 
 </head>
@@ -49,7 +78,9 @@
             </div>
 
             <div class="col-md-8 my-auto">
-                <h1>Melodia Analisada</h1>
+                <h1>
+                    <a href="/" style="text-decoration: none;" class="link-titulo">Melodia Analisada</a>
+                </h1>
             </div>
 
             <div class="col-md-2 d-none d-md-block">
@@ -68,14 +99,14 @@
         <div class="botoes">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Postagens</a>
+                    <a class="nav-link" href="/">Início</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/Sobre">Sobre o Blog</a>
                 </li>
             </ul>
         </div>
-        
+
         {{#if message}}
         <div class="alert alert-{{message.[0]}} alert-dismissible fade show my-3" role="alert">
             <strong>{{message.[1]}}</strong>

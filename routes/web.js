@@ -243,7 +243,6 @@ router.get("/usuario/:id/edit", (req, res) => {
     });
 });
 
-// Rota para processar a edição de um usuário (usando POST)
 router.post("/usuario/:id/edit", (req, res) => {
     const userId = req.params.id; // Obtém o ID do usuário da URL
     const { nome, senha, seguidores, dataCriacao } = req.body; // Obtém os dados do formulário

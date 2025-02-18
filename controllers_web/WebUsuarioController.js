@@ -1,266 +1,152 @@
-const UsuarioModel = require("../models/UsuarioModel.js");
+const UsuarioModel = require("../models/UsuarioModel");
 
 class WebUsuarioController {
-    /**
-     * Mostra o painel do usuário logado
-     */
-
+    // Mostra todos os usuários
     async index(req, res) {
         try {
-            const message = req.session.message ? req.session.message : null;
-            if (message) delete req.session.message;
-            const usuarioLogado = req.session.usuario || null; // Obtém os dados do usuário logado
-            const usuario = usuarioLogado ? await UsuarioModel.findOne(usuarioLogado.id) : null;
-            return res.render("Usuario/index", {
+            const usuarios = await UsuarioModel.findAll();
+            res.render("Usuario/index", {
                 layout: "Layouts/main",
-                title: "Lista de Usuários",
-                usuario: usuario,
-                message: message,
-                csrfToken: req.csrfToken()
+                title: "Usuários",
+                usuarios: usuarios, // Corrigido: passe 'usuarios' em vez de 'posts'
+                message: req.session.message || null,
             });
         } catch (error) {
-            return res.render("Usuario/index", {    
+            console.error("Erro ao buscar os usuários:", error);
+            res.render("Usuario/index", {
                 layout: "Layouts/main",
-                title: "Lista de Usuários",
-                usuario: null,
-                message: ["danger", JSON.stringify(error)]
+                title: "Usuários",
+                usuarios: [], // Corrigido: passe 'usuarios' em vez de 'posts'
+                message: ["danger", "Erro ao carregar os usuários."],
             });
         }
     }
 
-    /**
-     * Mostra o formulário de criação de usuário.
-     */
+    // Mostra o formulário para criar um novo usuário
     async create(req, res) {
-        try {
-            return res.render("Usuario/create", {
-                layout: "Layouts/main",
-                title: "Criar Usuário",
-                csrfToken: req.csrfToken()
-            });
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
+        res.render("Usuario/create", {
+            layout: "Layouts/main",
+            title: "Criar Novo Usuário",
+        });
     }
 
-    /**
-     * Salva um novo usuário no banco de dados.
-     */
+    // Salva um novo usuário no banco de dados
     async store(req, res) {
-        try {
-            const { nome, senha } = req.body;
+        const { nome, senha, seguidores, dataCriacao } = req.body;
 
-
-            if (!nome || !senha) {
-                req.session.message = ["warning", "Todos os campos são obrigatórios."];
-                return res.redirect("/usuario/create");
-            }
-
-            const usuarioExistente = await UsuarioModel.findOneByNome(nome);
-            if (usuarioExistente) {
-                req.session.message = ["warning", "Nome já cadastrado."];
-                return res.redirect("/usuario/create");
-            }
-
-            const usuario = new UsuarioModel();
-            usuario.nome = nome;
-            usuario.senha = senha;
-            await usuario.save();
-
-            req.session.message = ["success", "Usuário cadastrado com sucesso."];
-            return res.redirect("/usuario");
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
+        if (!nome || !senha || !seguidores || !dataCriacao) {
+            req.session.message = ["danger", "Todos os campos são obrigatórios."];
+            return res.redirect("/usuario/create");
         }
-        return res.redirect("/usuario");
+
+        try {
+            await UsuarioModel.create(nome, senha, seguidores, dataCriacao);
+            req.session.message = ["success", "Usuário criado com sucesso!"];
+            res.redirect("/usuario");
+        } catch (error) {
+            console.error("Erro ao criar o usuário:", error);
+            req.session.message = ["danger", "Erro ao criar o usuário."];
+            res.redirect("/usuario/create");
+        }
     }
 
-    /**
-     * Mostra detalhes de um usuário.
-     */
+    // Mostra os detalhes de um usuário específico
     async show(req, res) {
+        const userId = req.params.id;
+
         try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (usuario) {
-                return res.render("Usuario/show", {
-                    layout: "Layouts/main",
-                    title: "Detalhes do Usuário",
-                    usuario: usuario
-                });
-            }
-            req.session.message = ["warning", "Usuário não encontrado."];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Mostra o formulário de edição de usuário.
-     */
-    async edit(req, res) {
-        try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (usuario) {
-                return res.render("Usuario/edit", {
-                    layout: "Layouts/main",
-                    title: "Editar Usuário",
-                    usuario: usuario,
-                    csrfToken: req.csrfToken()
-                });
-            }
-            req.session.message = ["warning", "Usuário não encontrado."];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Mostra o formulário de edição de usuário.
-     */
-    async editNomePassword(req, res) {
-        try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (usuario) {
-                return res.render("Usuario/editNomePassword", {
-                    layout: "Layouts/main",
-                    title: "Editar Usuário",
-                    usuario: usuario,
-                    csrfToken: req.csrfToken()
-                });
-            }
-            req.session.message = ["warning", "Usuário não encontrado."];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Atualiza um usuário existente.
-     */
-    async update(req, res) {
-        try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (!usuario) {
-                req.session.message = ["warning", "Usuário não encontrado."];
-                return res.redirect("/usuario");
-            }
-
-            usuario.nome = req.body.nome;
-
-            await usuario.update();
-
-            // Atualiza session
-            req.session.usuario = { id: usuario.id, nome: usuario.nome };
-
-            req.session.message = ["success", `Usuário ${usuario.id} atualizado com sucesso.`];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Atualiza um usuário existente.
-     */
-    async updateNomePassword(req, res) {
-        try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (!usuario) {
-                req.session.message = ["warning", "Usuário não encontrado."];
-                return res.redirect("/usuario");
-            }
-
-            usuario.nome = req.body.nome;
-            usuario.senha = req.body.senha;
-
-            await usuario.updateNomePassword();
-
-            // Remove a session para forçar um novo login
-            delete req.session.usuario;
-
-            req.session.message = ["success", `Usuário ${usuario.id} atualizado com sucesso.`];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Remove um usuário.
-     */
-    async destroy(req, res) {
-        try {
-            const usuario = await UsuarioModel.findOne(req.params.id);
-            if (!usuario) {
-                req.session.message = ["warning", "Usuário não encontrado."];
-                return res.redirect("/usuario");
-            }
-
-            await usuario.delete();
-            req.session.message = ["success", "Usuário removido com sucesso."];
-        } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
-        }
-        return res.redirect("/usuario");
-    }
-
-    /**
-     * Mostra o formulário de login.
-     */
-    async loginForm(req, res) {
-        try {
-            return res.render("Usuario/login", {
+            const usuario = await UsuarioModel.findOne(userId);
+            res.render("Usuario/show", {
                 layout: "Layouts/main",
-                title: "Login de usuário",
-                csrfToken: req.csrfToken()
+                usuario: usuario || {
+                    id: "Nenhum usuário encontrado.",
+                    nome: "Nenhum usuário encontrado.",
+                    senha: "Nenhum usuário encontrado.",
+                    seguidores: 0,
+                    dataCriacao: new Date().toISOString().split("T")[0],
+                },
+                message: req.session.message || null,
             });
         } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
+            console.error("Erro ao buscar o usuário:", error);
+            res.render("Usuario/show", {
+                layout: "Layouts/main",
+                usuario: {
+                    id: "Erro",
+                    nome: "Erro ao carregar usuário.",
+                    senha: "Erro ao carregar usuário.",
+                    seguidores: 0,
+                    dataCriacao: new Date().toISOString().split("T")[0],
+                },
+                message: ["danger", "Erro ao carregar o usuário."],
+            });
         }
-        return res.redirect("/usuario");
     }
 
-    /**
-     * Processa o login do usuário.
-     */
-    async login(req, res) {
+    // Mostra o formulário para editar um usuário
+    async edit(req, res) {
+        const userId = req.params.id;
+    
         try {
-            const { nome, senha } = req.body;
-
-            if (!nome || !senha) {
-                req.session.message = ["warning", "Nome e senha são obrigatórios."];
-                return res.redirect("/usuario");
-            }
-
-            const usuario = await UsuarioModel.validateUser(nome, senha);
-            if (!usuario) {
-                req.session.message = ["danger", "Nome ou senha inválidos."];
-                return res.redirect("/usuario");
-            }
-
-            req.session.usuario = { id: usuario.id, nome: usuario.nome };
-            req.session.message = ["success", `Bem-vindo, ${usuario.nome}!`];
-            return res.redirect("/usuario");
+            const usuario = await UsuarioModel.findOne(userId);
+            res.render("Usuario/edit", {
+                layout: "Layouts/main",
+                title: "Editar Usuário",
+                usuario: usuario || {
+                    id: "Nenhum usuário encontrado.",
+                    nome: "Nenhum usuário encontrado.",
+                    senha: "Nenhum usuário encontrado.",
+                    seguidores: 0,
+                    dataCriacao: new Date().toISOString().split("T")[0],
+                },
+                message: req.session.message || null,
+            });
         } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
+            console.error("Erro ao buscar o usuário:", error);
+            res.render("Usuario/edit", {
+                layout: "Layouts/main",
+                title: "Editar Usuário",
+                usuario: {
+                    id: "Erro",
+                    nome: "Erro ao carregar usuário.",
+                    senha: "Erro ao carregar usuário.",
+                    seguidores: 0,
+                    dataCriacao: new Date().toISOString().split("T")[0],
+                },
+                message: ["danger", "Erro ao carregar o usuário."],
+            });
         }
-        return res.redirect("/usuario");
     }
 
-    /**
-     * Faz o logout do usuário.
-     */
-    async logout(req, res) {
+    // Atualiza um usuário existente
+    async update(req, res) {
+        const userId = req.params.id;
+        const { nome, senha, seguidores, dataCriacao } = req.body;
+    
         try {
-            delete req.session.usuario;
+            await UsuarioModel.update(userId, nome, senha, seguidores, dataCriacao);
+            req.session.message = ["success", "Usuário atualizado com sucesso!"];
+            res.redirect(`/usuario/${userId}`);
         } catch (error) {
-            req.session.message = ["danger", JSON.stringify(error)];
+            console.error("Erro ao atualizar o usuário:", error);
+            req.session.message = ["danger", "Erro ao atualizar o usuário."];
+            res.redirect(`/usuario/${userId}/edit`);
         }
-        return res.redirect("/usuario");
+    }
+
+    // Remove um usuário
+    async destroy(req, res) {
+        const userId = req.params.id;
+    
+        try {
+            await UsuarioModel.delete(userId);
+            req.session.message = ["success", "Usuário excluído com sucesso."];
+            res.redirect("/usuario");
+        } catch (error) {
+            console.error("Erro ao excluir o usuário:", error);
+            req.session.message = ["danger", "Erro ao excluir o usuário."];
+            res.redirect("/usuario");
+        }
     }
 }
 

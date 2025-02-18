@@ -1,7 +1,13 @@
-{{!-- Edit de usuario --}}
-
 <div class="container">
-    <form method="usuario" action="/usuario/{{usuario.id}}?_method=put">
+    <h1 class="my-4">Editar Usuário</h1>
+
+    {{#if message}}
+    <div class="alert alert-{{message.[0]}}">
+        {{message.[1]}}
+    </div>
+    {{/if}}
+
+    <form method="POST" action="/usuario/{{usuario.id}}/edit">
         <div class="my-3">
             <label for="id-input-id" class="form-label">ID</label>
             <input type="text" id="id-input-id" value="{{usuario.id}}" class="form-control" disabled>
@@ -18,19 +24,18 @@
         </div>
         <div class="my-3">
             <label for="id-input-seguidores" class="form-label">Seguidores</label>
-            <input type="text" name="seguidores" id="id-input-seguidores" value="{{usuario.seguidores}}" class="form-control"
+            <input type="number" name="seguidores" id="id-input-seguidores" value="{{usuario.seguidores}}" class="form-control"
                 placeholder="Digite o número de seguidores do  usuario. Ex: {{usuario.seguidores}}" required>
         </div>
-        
         <div class="my-3">
-            <label for="id-input-dataCriacao" class="form-label">dataCriacao</label>
+            <label for="id-input-dataCriacao" class="form-label">Data de Criação</label>
             <input type="text" name="dataCriacao" id="id-input-dataCriacao" value="{{usuario.dataCriacao}}"
                 class="form-control" placeholder="Digite a data de criação da conta do usuario. Ex: {{usuario.dataCriacao}}"
                 required>
         </div>
         <div class="my-3">
-            <button type="submit" class="btn btn-primary">Enviar</button>
-            <a href="/" class="btn btn-primary">Voltar</a>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="/usuario" class="btn btn-secondary">Voltar</a>
         </div>
     </form>
 </div>

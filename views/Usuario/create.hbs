@@ -1,41 +1,39 @@
 <div class="container">
-    <h1 class="my-4">Criar Novo Post</h1>
+    <h1 class="my-4">Criar Novo Usuário</h1>
 
     {{#if message}}
-        <div class="alert alert-{{message.[0]}}">
-            {{message.[1]}}
-        </div>
+    <div class="alert alert-{{message.[0]}}">
+        {{message.[1]}}
+    </div>
     {{/if}}
 
-    <form method="POST" action="/post">
+    <form method="POST" action="/usuario">
         <div class="my-3">
-            <label for="id-input-album" class="form-label">Álbum</label>
-            <input type="text" id="id-input-album" name="album" class="form-control" placeholder="Digite o nome do álbum" required>
+            <label for="id-input-nome" class="form-label">Nome</label>
+            <input type="text" id="id-input-nome" name="nome" class="form-control"
+                placeholder="Digite o nome do usuário" required>
         </div>
 
         <div class="my-3">
-            <label for="id-input-texto" class="form-label">Texto</label>
-            <textarea id="id-input-texto" name="texto" class="form-control" placeholder="Digite o texto do post" required></textarea>
+            <label for="id-input-senha" class="form-label">Senha</label>
+            <input type="password" id="id-input-senha" name="senha" class="form-control" placeholder="Digite a senha"
+                required>
         </div>
 
         <div class="my-3">
-            <label for="id-input-curtidas" class="form-label">Curtidas</label>
-            <input type="number" id="id-input-curtidas" name="curtidas" class="form-control" placeholder="Digite o número de curtidas" required>
+            <label for="id-input-seguidores" class="form-label">Seguidores</label>
+            <input type="number" id="id-input-seguidores" name="seguidores" class="form-control"
+                placeholder="Digite o número de seguidores" required>
         </div>
 
         <div class="my-3">
-            <label for="id-input-dataPostagem" class="form-label">Data de Postagem</label>
-            <input type="date" id="id-input-dataPostagem" name="dataPostagem" class="form-control" required>
+            <label for="id-input-dataCriacao" class="form-label">Data de Criação</label>
+            <input type="text" id="id-input-dataCriacao" name="dataCriacao" class="form-control" required>
         </div>
 
         <div class="my-3">
-            <label for="id-input-usuario_id" class="form-label">ID do Usuário</label>
-            <input type="number" id="id-input-usuario_id" name="usuario_id" class="form-control" placeholder="Digite o ID do usuário" required>
-        </div>
-
-        <div class="my-3">
-            <button type="submit" class="btn btn-primary">Criar Post</button>
-            <a href="/post" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Criar Usuário</button>
+            <a href="/usuario" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 </div>

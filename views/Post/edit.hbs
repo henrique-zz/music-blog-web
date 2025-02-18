@@ -1,7 +1,9 @@
 {{!-- Edit de post --}}
 
 <div class="container">
-    <form method="post" action="/post/{{post.id}}?_method=put">
+    <form method="post" action="/post/{{post.id}}/edit" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+
         <div class="my-3">
             <label for="id-input-id" class="form-label">ID</label>
             <input type="text" id="id-input-id" value="{{post.id}}" class="form-control" disabled>
@@ -15,9 +17,8 @@
 
         <div class="my-3">
             <label for="id-input-texto" class="form-label">Texto</label>
-            <input type="text" name="texto" id="id-input-texto" value="{{post.texto}}"
-                class="form-control" placeholder="Digite um texto para o post. Ex: {{post.texto}}"
-                required>
+            <input type="text" name="texto" id="id-input-texto" value="{{post.texto}}" class="form-control"
+                placeholder="Digite um texto para o post. Ex: {{post.texto}}" required>
         </div>
 
         <div class="my-3">
@@ -26,10 +27,11 @@
                 placeholder="Digite o número de curtidas para o post. Ex: {{post.curtidas}}" required>
         </div>
 
-         <div class="my-3">
+        <div class="my-3">
             <label for="id-input-dataPostagem" class="form-label">Data de Postagem</label>
-            <input type="text" name="dataPostagem" id="id-input-dataPostagem" value="{{post.dataPostagem}}" class="form-control"
-                placeholder="Digite a data de postagem do  post. Ex: {{post.dataPostagem}}" required>
+            <input type="text" name="dataPostagem" id="id-input-dataPostagem" value="{{post.dataPostagem}}"
+                class="form-control" placeholder="Digite a data de postagem do  post. Ex: {{post.dataPostagem}}"
+                required>
         </div>
 
         <div class="my-3">

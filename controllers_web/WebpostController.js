@@ -1,116 +1,157 @@
-const async = require("hbs/lib/async");
 const PostModel = require("../models/PostModel");
 
 class WebPostController {
-    /**
-    * Mostra uma tela com todos os recursos
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    */
+    // Mostra todos os posts
     async index(req, res) {
-        res.send( await PostModel.findAll());
-        // const posts = await PostModel.findAll(); // Busca todos os posts
-        // res.render("post/index", { posts });
-        
+        try {
+            const posts = await PostModel.findAll();
+            res.render("Post/index", { 
+                layout: "Layouts/main", 
+                title: "Postagens", 
+                posts, 
+                message: req.session.message || null 
+            });
+        } catch (error) {
+            console.error("Erro ao buscar os posts:", error);
+            res.render("Post/index", { 
+                layout: "Layouts/main", 
+                title: "Postagens", 
+                posts: [], 
+                message: ["danger", "Erro ao carregar as postagens."] 
+            });
+        }
     }
 
-    /**
-    * Mostra um formulário para criação de um novo recurso
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    */
+    // Mostra o formulário para criar um novo post
     async create(req, res) {
-        res.render("post/create");
+        res.render("Post/create", { 
+            layout: "Layouts/main", 
+            title: "Criar Novo Post" 
+        });
     }
 
-    /**
-    * Salva um novo recurso no banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    */
+    // Salva um novo post no banco de dados
     async store(req, res) {
+        const { album, texto, curtidas, dataPostagem, Usuario_id } = req.body;
+
+        if (!album || !texto || !curtidas || !dataPostagem || !Usuario_id) {
+            req.session.message = ["danger", "Todos os campos são obrigatórios."];
+            return res.redirect("/post/create");
+        }
+
         try {
-            const post = new PostModel();
-            post.album = req.body.album || null; // Se req.body.album for undefined, usa null
-            post.texto = req.body.texto || null; // Se req.body.texto for undefined, usa null
-            post.curtidas = req.body.curtidas || 0; // Se req.body.curtidas for undefined, usa 0 (ou null, se preferir)
-            post.dataPostagem = req.body.dataPostagem || new Date(); // Se req.body.dataPostagem for undefined, usa a data atual
-            await post.save(); // Salva o novo post no banco de dados
-            res.redirect("/post"); // Redireciona para a lista de posts
+            await PostModel.create(album, texto, curtidas, dataPostagem, Usuario_id);
+            req.session.message = ["success", "Post criado com sucesso!"];
+            res.redirect("/post");
         } catch (error) {
-            res.status(500).send("Erro ao salvar o post: " + error.message);
+            console.error("Erro ao criar o post:", error);
+            req.session.message = ["danger", "Erro ao criar o post."];
+            res.redirect("/post/create");
         }
     }
 
-
-
-    /**
-    * Mostra um recurso específico
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    * @param {Number} req.params.tipoProdutoId Parâmetro passado pela rota do express
-    */
-
+    // Mostra um post específico
     async show(req, res) {
+        const postId = req.params.postId;
+
         try {
-            const post = await PostModel.findOne(req.params.postId); // Busca o post pelo ID
-            res.render("post/show", { post }); // Renderiza o template com os detalhes do post
+            const post = await PostModel.findOne(postId);
+            res.render("Post/show", { 
+                layout: "Layouts/main", 
+                post: post || { 
+                    id: "Nenhum post encontrado.", 
+                    album: "Nenhum post encontrado.", 
+                    texto: "Nenhum post encontrado.", 
+                    curtidas: 0, 
+                    dataPostagem: new Date().toISOString().split("T")[0] 
+                }, 
+                message: req.session.message || null 
+            });
         } catch (error) {
-            res.status(500).send("Erro ao buscar o post: " + error.message);
+            console.error("Erro ao buscar o post:", error);
+            res.render("Post/show", { 
+                layout: "Layouts/main", 
+                post: { 
+                    id: "Erro", 
+                    album: "Erro ao carregar post.", 
+                    texto: "Erro ao carregar post.", 
+                    curtidas: 0, 
+                    dataPostagem: new Date().toISOString().split("T")[0] 
+                }, 
+                message: ["danger", "Erro ao carregar o post."] 
+            });
         }
     }
 
-    /**
-    * Mostra um formulário para editar um recurso específico
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    * @param {Number} req.params.tipoProdutoId Parâmetro passado pela rota do express
-    */
+    // Mostra o formulário para editar um post
     async edit(req, res) {
+        const postId = req.params.postId;
+
         try {
-            const post = await PostModel.findOne(req.params.postId); // Busca o post pelo ID
-            res.render("post/edit", { post }); // Renderiza o formulário de edição
+            const post = await PostModel.findOne(postId);
+            res.render("Post/edit", { 
+                layout: "Layouts/main", 
+                post: post || { 
+                    id: "Nenhum post encontrado.", 
+                    album: "Nenhum post encontrado.", 
+                    texto: "Nenhum post encontrado.", 
+                    curtidas: 0, 
+                    dataPostagem: new Date() 
+                } 
+            });
         } catch (error) {
-            res.status(500).send("Erro ao buscar o post: " + error.message);
+            console.error("Erro ao buscar o post:", error);
+            res.render("Post/edit", { 
+                layout: "Layouts/main", 
+                post: { 
+                    id: "Erro", 
+                    album: "Erro ao carregar post.", 
+                    texto: "Erro ao carregar post.", 
+                    curtidas: 0, 
+                    dataPostagem: new Date() 
+                } 
+            });
         }
     }
 
-    /**
-    * Atualiza um recurso existente no banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    * @param {Number} req.params.tipoProdutoId Parâmetro passado pela rota do express
-    */
+    // Atualiza um post existente
     async update(req, res) {
+        const postId = req.params.postId;
+        const { album, texto, curtidas, dataPostagem } = req.body;
+
         try {
-            const post = await PostModel.findOne(req.params.postId); // Busca o post pelo ID
-            post.album = req.body.album;
-            post.texto = req.body.texto;
-            post.curtidas = req.body.curtidas;
-            post.dataPostagem = req.body.dataPostagem;
-            await post.update(); // Atualiza o post no banco de dados
-            res.redirect("/post"); // Redireciona para a lista de posts
+            await PostModel.update(postId, album, texto, curtidas, dataPostagem);
+            res.redirect(`/post/${postId}`);
         } catch (error) {
-            res.status(500).send("Erro ao atualizar o post: " + error.message);
+            console.error("Erro ao atualizar o post:", error);
+            res.render("Post/edit", { 
+                layout: "Layouts/main", 
+                post: { 
+                    id: postId, 
+                    album, 
+                    texto, 
+                    curtidas, 
+                    dataPostagem 
+                }, 
+                message: ["danger", "Erro ao atualizar o post."] 
+            });
         }
     }
 
-    /**
-    * Remove um recurso existente do banco de dados
-    * @param {*} req Requisição da rota do express
-    * @param {*} res Resposta da rota do express
-    * @param {Number} req.params.tipoProdutoId Parâmetro passado pela rota do express
-    */
+    // Remove um post
     async destroy(req, res) {
+        const postId = req.params.postId;
+
         try {
-            const post = await PostModel.findOne(req.params.postId); // Busca o post pelo ID
-            await post.delete(); // Remove o post do banco de dados
-            res.redirect("/post"); // Redireciona para a lista de posts
+            await PostModel.delete(postId);
+            req.session.message = ["success", "Post excluído com sucesso."];
+            res.redirect("/post");
         } catch (error) {
-            res.status(500).send("Erro ao remover o post: " + error.message);
+            console.error("Erro ao excluir o post:", error);
+            req.session.message = ["danger", "Erro ao excluir o post."];
+            res.redirect("/post");
         }
     }
 }
-
 
 module.exports = new WebPostController();

@@ -67,14 +67,17 @@ class WebUsuarioController {
 
     // Processa o logout
     logout(req, res) {
-        // Destrói a sessão do usuário
         req.session.destroy((err) => {
             if (err) {
                 console.error("Erro ao fazer logout:", err);
+                return res.redirect("/");
             }
-            res.redirect("/");
+            res.locals.usuarioId = null; // Garante que não há usuário na sessão
+            res.redirect("/usuario/login");
         });
     }
+    
+    
 
     // Mostra todos os usuários
     async index(req, res) {

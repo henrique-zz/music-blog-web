@@ -35,6 +35,7 @@ router.delete("/post/:postId", webpostController.destroy);
 // Rotas de Autenticação
 router.get("/usuario/login", webUsuarioController.loginForm);
 router.post("/usuario/login", webUsuarioController.login);
+router.get("/usuario/logout", webUsuarioController.logout);
 router.post("/usuario/logout", webUsuarioController.logout);
 
 // Rotas de registro

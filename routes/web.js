@@ -35,7 +35,7 @@ function isAuthenticated(req, res, next) {
 
 
 // Rotas de post
-router.get("/post", isAuthenticated, webpostController.index);
+router.get("/post", webpostController.index);
 router.get("/post/create", isAuthenticated, webpostController.create);
 router.post("/post", isAuthenticated, webpostController.store);
 router.get("/post/:postId", isAuthenticated, webpostController.show);
@@ -53,7 +53,7 @@ router.post("/usuario/logout", webUsuarioController.logout);
 router.get("/usuario/register", webUsuarioController.registerForm);
 router.post("/usuario/register", webUsuarioController.register)
 
-router.get("/usuario", isAuthenticated, webUsuarioController.index);
+router.get("/usuario", webUsuarioController.index);
 router.get("/usuario/create", isAuthenticated, webUsuarioController.create);
 router.post("/usuario", isAuthenticated, webUsuarioController.store);
 router.get("/usuario/:id", isAuthenticated, webUsuarioController.show);

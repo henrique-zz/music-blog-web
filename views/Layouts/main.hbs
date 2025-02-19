@@ -106,6 +106,7 @@
                 <nav>
                     <ul>
                         {{#if usuarioId}}
+                        <li>Bem-vindo, {{usuarioNome}} (ID: {{usuarioId}})!</li>
                         <li><a class="nav-link" href="/usuario/logout" onclick="return confirmDelete()">Logout</a></li>
                         <script>
                             function confirmDelete() {

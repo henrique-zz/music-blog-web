@@ -32,9 +32,10 @@ class WebPostController {
 
     // Salva um novo post no banco de dados
     async store(req, res) {
-        const { album, texto, curtidas, dataPostagem, Usuario_id } = req.body;
+        const { album, texto, curtidas, dataPostagem } = req.body;
+        const Usuario_id = req.session.usuarioId; // Obtém o ID do usuário logado
 
-        if (!album || !texto || !curtidas || !dataPostagem || !Usuario_id) {
+        if (!album || !texto || !curtidas || !dataPostagem) {
             req.session.message = ["danger", "Todos os campos são obrigatórios."];
             return res.redirect("/post/create");
         }
@@ -86,18 +87,22 @@ class WebPostController {
     // Mostra o formulário para editar um post
     async edit(req, res) {
         const postId = req.params.postId;
+        const usuarioLogadoId = req.session.usuarioId;
 
         try {
             const post = await PostModel.findOne(postId);
+
+            if (!post) {
+                return res.status(404).send("Post não encontrado.");
+            }
+
+            if (post.Usuario_id !== usuarioLogadoId) {
+                return res.status(403).send("Você não tem permissão para editar este post.");
+            }
+
             res.render("Post/edit", { 
                 layout: "Layouts/main", 
-                post: post || { 
-                    id: "Nenhum post encontrado.", 
-                    album: "Nenhum post encontrado.", 
-                    texto: "Nenhum post encontrado.", 
-                    curtidas: 0, 
-                    dataPostagem: new Date() 
-                } 
+                post 
             });
         } catch (error) {
             console.error("Erro ao buscar o post:", error);
@@ -117,9 +122,20 @@ class WebPostController {
     // Atualiza um post existente
     async update(req, res) {
         const postId = req.params.postId;
+        const usuarioLogadoId = req.session.usuarioId;
         const { album, texto, curtidas, dataPostagem } = req.body;
 
         try {
+            const post = await PostModel.findOne(postId);
+
+            if (!post) {
+                return res.status(404).send("Post não encontrado.");
+            }
+
+            if (post.Usuario_id !== usuarioLogadoId) {
+                return res.status(403).send("Você não tem permissão para editar este post.");
+            }
+
             await PostModel.update(postId, album, texto, curtidas, dataPostagem);
             res.redirect(`/post/${postId}`);
         } catch (error) {
@@ -141,8 +157,19 @@ class WebPostController {
     // Remove um post
     async destroy(req, res) {
         const postId = req.params.postId;
+        const usuarioLogadoId = req.session.usuarioId;
 
         try {
+            const post = await PostModel.findOne(postId);
+
+            if (!post) {
+                return res.status(404).send("Post não encontrado.");
+            }
+
+            if (post.Usuario_id !== usuarioLogadoId) {
+                return res.status(403).send("Você não tem permissão para excluir este post.");
+            }
+
             await PostModel.delete(postId);
             req.session.message = ["success", "Post excluído com sucesso."];
             res.redirect("/post");

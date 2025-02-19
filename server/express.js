@@ -35,11 +35,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-
 app.use((req, res, next) => {
-    res.locals.usuarioId = req.session.usuarioId || null; // Torna o ID do usuário acessível nas views
+    res.locals.usuarioId = req.session.usuarioId || null;
+    res.locals.usuarioNome = req.session.usuarioNome || null;
     next();
 });
+
 
 function requireAuth(req, res, next) {
     if (!req.session || !req.session.usuarioId) {

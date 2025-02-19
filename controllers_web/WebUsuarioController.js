@@ -52,6 +52,7 @@ class WebUsuarioController {
             if (usuario) {
                 // Armazena o ID do usuário na sessão
                 req.session.usuarioId = usuario.id;
+                req.session.usuarioNome = usuario.nome;
                 req.session.message = ["success", "Login realizado com sucesso!"];
                 res.redirect("/");
             } else {

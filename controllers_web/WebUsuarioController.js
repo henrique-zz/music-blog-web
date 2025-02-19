@@ -1,4 +1,6 @@
 const UsuarioModel = require("../models/UsuarioModel");
+const bcrypt = require('bcrypt');
+
 
 class WebUsuarioController {
 
@@ -13,17 +15,17 @@ class WebUsuarioController {
     // Processa o registro de um novo usuário
     async register(req, res) {
         const { nome, senha } = req.body;
-
+    
         try {
             // Verifica se o usuário já existe
-            const usuarioExistente = await UsuarioModel.findByCredentials(nome, senha);
+            const usuarioExistente = await UsuarioModel.findByCredentials(nome); // Apenas o nome é necessário
             if (usuarioExistente) {
                 req.session.message = ["danger", "Usuário já existe!"];
                 return res.redirect("/usuario/register");
             }
-
+    
             // Cria um novo usuário
-            await UsuarioModel.create(nome, senha);
+            await UsuarioModel.create(nome, senha, 0, new Date().toISOString().split("T")[0]); // Adicione valores padrão para seguidores e dataCriacao
             req.session.message = ["success", "Conta criada com sucesso! Faça login."];
             res.redirect("/usuario/login");
         } catch (error) {
@@ -45,17 +47,28 @@ class WebUsuarioController {
     // Processa o login
     async login(req, res) {
         const { nome, senha } = req.body;
-
+    
         try {
-            const usuario = await UsuarioModel.findByCredentials(nome, senha);
-
+            // Encontre o usuário pelo nome
+            const usuario = await UsuarioModel.findByCredentials(nome);
+    
             if (usuario) {
-                // Armazena o ID do usuário na sessão
-                req.session.usuarioId = usuario.id;
-                req.session.usuarioNome = usuario.nome;
-                req.session.message = ["success", "Login realizado com sucesso!"];
-                res.redirect("/");
+                // Compare a senha fornecida com a senha armazenada
+                const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    
+                if (senhaValida) {
+                    // Se as senhas coincidem, realiza o login
+                    req.session.usuarioId = usuario.id;
+                    req.session.usuarioNome = usuario.nome;
+                    req.session.message = ["success", "Login realizado com sucesso!"];
+                    res.redirect("/");
+                } else {
+                    // Senha inválida
+                    req.session.message = ["danger", "Credenciais inválidas."];
+                    res.redirect("/usuario/login");
+                }
             } else {
+                // Usuário não encontrado
                 req.session.message = ["danger", "Credenciais inválidas."];
                 res.redirect("/usuario/login");
             }
@@ -65,6 +78,8 @@ class WebUsuarioController {
             res.redirect("/usuario/login");
         }
     }
+    
+    
 
     // Processa o logout
     logout(req, res) {

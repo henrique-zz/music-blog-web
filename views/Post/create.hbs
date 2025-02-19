@@ -22,10 +22,7 @@
             <input type="text" id="id-input-dataPostagem" name="dataPostagem" class="form-control" required>
         </div>
 
-        <div class="my-3">
-            <label for="id-input-usuario_id" class="form-label">ID do Usuário</label>
-            <input type="number" id="id-input-usuario_id" name="Usuario_id" class="form-control" required>
-        </div>
+        <input type="hidden" id="id-input-usuario_id" name="Usuario_id" value="{{ usuarioId }}">
 
         <div class="my-3">
             <button type="submit" class="btn btn-primary">Salvar</button>

@@ -125,11 +125,19 @@
         </div>
 
         {{#if message}}
-        <div class="alert alert-{{message.[0]}} alert-dismissible fade show my-3" role="alert">
-            <strong>{{message.[1]}}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {{/if}}
+<div id="alert-message" class="alert alert-{{message.[0]}} alert-dismissible fade show my-3" role="alert">
+    <strong>{{message.[1]}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<script>
+    setTimeout(() => {
+        document.getElementById("alert-message").style.display = "none";
+        fetch('/clear-message', { method: 'POST' });
+    }, 5000); // Mensagem some após 5 segundos
+</script>
+{{/if}}
+
     </div>
     {{{body}}}
 </body>

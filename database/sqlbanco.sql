@@ -24,7 +24,7 @@ USE `blog_db` ;
 CREATE TABLE IF NOT EXISTS `blog_db`.`Usuario` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL,
-  `senha` VARCHAR(45) NULL,
+  `senha` VARCHAR(255) NULL,
   `seguidores` INT NULL,
   `dataCriacao` TIMESTAMP NULL,
   PRIMARY KEY (`id`))

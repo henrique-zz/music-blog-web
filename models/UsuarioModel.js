@@ -1,6 +1,19 @@
 const connection = require("../database/db");
 
 class UsuarioModel {
+    
+    static async findByCredentials(nome, senha) {
+        const query = "SELECT * FROM Usuario WHERE nome = ? AND senha = ?";
+        return new Promise((resolve, reject) => {
+            connection.query(query, [nome, senha], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results.length > 0 ? results[0] : null);
+                }
+            });
+        });
+    }
     // Busca todos os usuários
     static async findAll() {
         const query = "SELECT * FROM Usuario ORDER BY id DESC";

@@ -14,7 +14,6 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Senha</th>
                 <th>Seguidores</th>
                 <th>Data de Criação</th>
                 <th>Ações</th>
@@ -25,14 +24,12 @@
             <tr>
                 <td>{{this.id}}</td>
                 <td>{{this.nome}}</td>
-                <td>{{this.senha}}</td>
                 <td>{{this.seguidores}}</td>
                 <td>{{this.dataCriacao}}</td>
                 <td>
                     <a href="/usuario/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
                     <a href="/usuario/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>
-                    <form action="/usuario/{{this.id}}/delete" method="POST" style="display: inline;">
-                        <input type="hidden" name="_method" value="DELETE">
+                    <form action="/usuario/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
                     </form>
                 </td>

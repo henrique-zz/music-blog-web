@@ -44,7 +44,7 @@
             width: 150px;
         }
 
-        .link-titulo{
+        .link-titulo {
             color: inherit;
             transition: color 0.3s ease, font-size 0.3s ease;
         }
@@ -62,8 +62,6 @@
             color: black;
             font-size: larger;
         }
-
-        
     </style>
 
 </head>
@@ -72,6 +70,7 @@
     <img id="imagem-radio" src="/img/radio.png" alt="imagem radio">
 
     <div class="container my-2">
+
         <div class="row text-center my-3">
             <div class="col-md-2 d-none d-md-block">
                 <img src="/img/album2.jpg" alt="album2.jpg" class="img-fluid w-55">
@@ -104,6 +103,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Sobre">Sobre o Blog</a>
                 </li>
+                <nav>
+                    <ul>
+                        {{#if usuarioId}}
+                        <li><a class="nav-link" href="/usuario/logout">Logout</a></li>
+                        {{else}}
+                        <li><a class="nav-link" href="/usuario/login">Login</a></li>
+                        <li><a class="nav-link" href="/usuario/register">Criar Conta</a></li>
+                        {{/if}}
+                    </ul>
+                </nav>
+
+
             </ul>
         </div>
 

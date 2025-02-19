@@ -26,12 +26,31 @@ app.use(methodOverride("_method"));
 // Middleware - Configura o middeware para fazer o parse no corpo da requisição e identificar dados no formato JSON
 app.use(express.json());
 
+
+
+
 // Middleware - Session
 app.use(session({
     secret: Crypto.randomBytes(32).toString('hex'), // chave secreta para assinar o cookie da session com 64 catacteres
     resave: false,
     saveUninitialized: true
 }));
+
+app.use((req, res, next) => {
+    res.locals.usuarioId = req.session.usuarioId || null; // Torna o ID do usuário acessível nas views
+    next();
+});
+
+function requireAuth(req, res, next) {
+    if (req.session.usuarioId) {
+        // Usuário está autenticado, continue
+        next();
+    } else {
+        // Usuário não está autenticado, redirecione para a página de login
+        req.session.message = ["danger", "Você precisa estar logado para acessar esta página."];
+        res.redirect("/usuario/login");
+    }
+}
 
 // Middleware - Utilizo um arquivo externo para definir as rotas WEB
 app.use(webRoutes);

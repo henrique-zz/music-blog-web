@@ -1,6 +1,81 @@
 const UsuarioModel = require("../models/UsuarioModel");
 
 class WebUsuarioController {
+
+    registerForm(req, res) {
+        res.render("Usuario/register", {
+            layout: "Layouts/main",
+            title: "Criar Conta",
+            message: req.session.message || null,
+        });
+    }
+
+    // Processa o registro de um novo usuário
+    async register(req, res) {
+        const { nome, senha } = req.body;
+
+        try {
+            // Verifica se o usuário já existe
+            const usuarioExistente = await UsuarioModel.findByCredentials(nome, senha);
+            if (usuarioExistente) {
+                req.session.message = ["danger", "Usuário já existe!"];
+                return res.redirect("/usuario/register");
+            }
+
+            // Cria um novo usuário
+            await UsuarioModel.create(nome, senha);
+            req.session.message = ["success", "Conta criada com sucesso! Faça login."];
+            res.redirect("/usuario/login");
+        } catch (error) {
+            console.error("Erro ao criar conta:", error);
+            req.session.message = ["danger", "Erro ao criar conta."];
+            res.redirect("/usuario/register");
+        }
+    }
+    
+     // Exibe o formulário de login
+     loginForm(req, res) {
+        res.render("Usuario/login", {
+            layout: "Layouts/main",
+            title: "Login",
+            message: req.session.message || null,
+        });
+    }
+
+    // Processa o login
+    async login(req, res) {
+        const { nome, senha } = req.body;
+
+        try {
+            const usuario = await UsuarioModel.findByCredentials(nome, senha);
+
+            if (usuario) {
+                // Armazena o ID do usuário na sessão
+                req.session.usuarioId = usuario.id;
+                req.session.message = ["success", "Login realizado com sucesso!"];
+                res.redirect("/");
+            } else {
+                req.session.message = ["danger", "Credenciais inválidas."];
+                res.redirect("/usuario/login");
+            }
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+            req.session.message = ["danger", "Erro ao fazer login."];
+            res.redirect("/usuario/login");
+        }
+    }
+
+    // Processa o logout
+    logout(req, res) {
+        // Destrói a sessão do usuário
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Erro ao fazer logout:", err);
+            }
+            res.redirect("/");
+        });
+    }
+
     // Mostra todos os usuários
     async index(req, res) {
         try {
@@ -136,10 +211,10 @@ class WebUsuarioController {
 
     // Remove um usuário
     async destroy(req, res) {
-        const userId = req.params.id;
-    
+        const usuarioId = req.params.usuarioId;
+
         try {
-            await UsuarioModel.delete(userId);
+            await UsuarioModel.delete(usuarioId);
             req.session.message = ["success", "Usuário excluído com sucesso."];
             res.redirect("/usuario");
         } catch (error) {

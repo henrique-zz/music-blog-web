@@ -33,9 +33,13 @@ router.post("/post/:postId/edit", webpostController.update);
 router.delete("/post/:postId", webpostController.destroy);
 
 // Rotas de Autenticação
-// router.get("/usuario/login", webUsuarioController.loginForm);
-// router.post("/usuario/login", webUsuarioController.login);
-// router.post("/usuario/logout", webUsuarioController.logout);
+router.get("/usuario/login", webUsuarioController.loginForm);
+router.post("/usuario/login", webUsuarioController.login);
+router.post("/usuario/logout", webUsuarioController.logout);
+
+// Rotas de registro
+router.get("/usuario/register", webUsuarioController.registerForm);
+router.post("/usuario/register", webUsuarioController.register)
 
 router.get("/usuario", webUsuarioController.index);
 router.get("/usuario/create", webUsuarioController.create);

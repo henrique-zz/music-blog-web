@@ -34,6 +34,7 @@ function isAuthenticated(req, res, next) {
 }
 
 
+
 // Rotas de post
 router.get("/post", webpostController.index);
 router.get("/post/create", isAuthenticated, webpostController.create);

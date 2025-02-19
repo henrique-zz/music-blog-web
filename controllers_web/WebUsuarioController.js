@@ -32,9 +32,9 @@ class WebUsuarioController {
             res.redirect("/usuario/register");
         }
     }
-    
-     // Exibe o formulário de login
-     loginForm(req, res) {
+
+    // Exibe o formulário de login
+    loginForm(req, res) {
         res.render("Usuario/login", {
             layout: "Layouts/main",
             title: "Login",
@@ -77,8 +77,8 @@ class WebUsuarioController {
             res.redirect("/usuario/login");
         });
     }
-    
-    
+
+
 
     // Mostra todos os usuários
     async index(req, res) {
@@ -165,43 +165,38 @@ class WebUsuarioController {
     // Mostra o formulário para editar um usuário
     async edit(req, res) {
         const userId = req.params.id;
-    
+
+        if (req.session.usuarioId != userId) {
+            req.session.message = ["danger", "Você só pode editar seu próprio perfil!"];
+            return res.redirect("/usuario");
+        }
+
         try {
             const usuario = await UsuarioModel.findOne(userId);
             res.render("Usuario/edit", {
                 layout: "Layouts/main",
                 title: "Editar Usuário",
-                usuario: usuario || {
-                    id: "Nenhum usuário encontrado.",
-                    nome: "Nenhum usuário encontrado.",
-                    senha: "Nenhum usuário encontrado.",
-                    seguidores: 0,
-                    dataCriacao: new Date().toISOString().split("T")[0],
-                },
+                usuario,
                 message: req.session.message || null,
             });
         } catch (error) {
             console.error("Erro ao buscar o usuário:", error);
-            res.render("Usuario/edit", {
-                layout: "Layouts/main",
-                title: "Editar Usuário",
-                usuario: {
-                    id: "Erro",
-                    nome: "Erro ao carregar usuário.",
-                    senha: "Erro ao carregar usuário.",
-                    seguidores: 0,
-                    dataCriacao: new Date().toISOString().split("T")[0],
-                },
-                message: ["danger", "Erro ao carregar o usuário."],
-            });
+            req.session.message = ["danger", "Erro ao carregar o usuário."];
+            res.redirect("/usuario");
         }
     }
+
 
     // Atualiza um usuário existente
     async update(req, res) {
         const userId = req.params.id;
         const { nome, senha, seguidores, dataCriacao } = req.body;
-    
+
+        if (req.session.usuarioId != userId) {
+            req.session.message = ["danger", "Você só pode editar seu próprio perfil!"];
+            return res.redirect("/usuario");
+        }
+
         try {
             await UsuarioModel.update(userId, nome, senha, seguidores, dataCriacao);
             req.session.message = ["success", "Usuário atualizado com sucesso!"];
@@ -213,20 +208,42 @@ class WebUsuarioController {
         }
     }
 
+
     // Remove um usuário
     async destroy(req, res) {
-        const usuarioId = req.params.id; // Alterado de usuarioId para id
-    
+        const userId = req.params.id;
+
+        // Verifica se o usuário está tentando excluir sua própria conta
+        if (req.session.usuarioId != userId) {
+            req.session.message = ["danger", "Você só pode excluir seu próprio perfil!"];
+            return res.redirect("/usuario");
+        }
+
         try {
-            await UsuarioModel.delete(usuarioId);
+            // Exclui o usuário do banco de dados
+            await UsuarioModel.delete(userId);
+
+            // Antes de destruir a sessão, defina a mensagem
             req.session.message = ["success", "Usuário excluído com sucesso."];
-            res.redirect("/usuario");
+
+            // Agora, destrua a sessão e redirecione
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error("Erro ao destruir a sessão:", err);
+                    return res.redirect("/usuario");
+                }
+                res.locals.usuarioId = null; // Garantir que não há usuário na sessão
+                res.redirect("/usuario/login");  // Redireciona para a página de login
+            });
         } catch (error) {
             console.error("Erro ao excluir o usuário:", error);
             req.session.message = ["danger", "Erro ao excluir o usuário."];
             res.redirect("/usuario");
         }
     }
+
+
+
 }
 
 module.exports = new WebUsuarioController();

@@ -2,9 +2,9 @@
     <h1 class="my-4">Postagens</h1>
 
     {{#if message}}
-        <div class="alert alert-{{message.[0]}}">
-            {{message.[1]}}
-        </div>
+    <div class="alert alert-{{message.[0]}}">
+        {{message.[1]}}
+    </div>
     {{/if}}
 
     <a href="/post/create" class="btn btn-success mb-3">Criar Novo Post</a>
@@ -22,25 +22,31 @@
         </thead>
         <tbody>
             {{#each posts}}
-                <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.album}}</td>
-                    <td>{{this.texto}}</td>
-                    <td>{{this.curtidas}}</td>
-                    <td>{{this.dataPostagem}}</td>
-                    <td>{{this.Usuario_id}}</td>
-                    <td>
-                        <a href="/post/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
-                        <a href="/post/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>
-                        <form action="/post/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.album}}</td>
+                <td>{{this.texto}}</td>
+                <td>{{this.curtidas}}</td>
+                <td>{{this.dataPostagem}}</td>
+                <td>{{this.Usuario_id}}</td>
+                <td>
+                    <a href="/post/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="/post/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="/post/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirmDelete()">Excluir</button>
+                    </form>
+                    <script>
+                        function confirmDelete() {
+                            return confirm("Você tem certeza que deseja excluir este post?");
+                        }
+                    </script>
+                </td>
+            </tr>
             {{else}}
-                <tr>
-                    <td colspan="6" class="text-center">Nenhum post encontrado.</td>
-                </tr>
+            <tr>
+                <td colspan="6" class="text-center">Nenhum post encontrado.</td>
+            </tr>
             {{/each}}
         </tbody>
     </table>

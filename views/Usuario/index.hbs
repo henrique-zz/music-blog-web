@@ -30,8 +30,16 @@
                     <a href="/usuario/{{this.id}}" class="btn btn-info btn-sm">Ver</a>
                     <a href="/usuario/{{this.id}}/edit" class="btn btn-warning btn-sm">Editar</a>
                     <form action="/usuario/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirmDelete()">Excluir</button>
                     </form>
+
+                    <script>
+                        function confirmDelete() {
+                            return confirm("Você tem certeza que deseja excluir este usuário?");
+                        }
+                    </script>
+
                 </td>
             </tr>
             {{else}}

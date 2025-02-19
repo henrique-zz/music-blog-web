@@ -22,7 +22,7 @@ USE `blog_db` ;
 -- Table `blog_db`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `blog_db`.`Usuario` (
-  `id` INT NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL,
   `senha` VARCHAR(45) NULL,
   `seguidores` INT NULL,
@@ -35,7 +35,7 @@ ENGINE = InnoDB;
 -- Table `blog_db`.`Post`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `blog_db`.`Post` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `album` VARCHAR(45) NULL,
   `texto` VARCHAR(255) NULL,
   `curtidas` INT NULL,

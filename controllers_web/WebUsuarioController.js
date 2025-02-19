@@ -214,8 +214,8 @@ class WebUsuarioController {
 
     // Remove um usuário
     async destroy(req, res) {
-        const usuarioId = req.params.usuarioId;
-
+        const usuarioId = req.params.id; // Alterado de usuarioId para id
+    
         try {
             await UsuarioModel.delete(usuarioId);
             req.session.message = ["success", "Usuário excluído com sucesso."];

@@ -1,4 +1,8 @@
 <div class="container">
-    <a href="/post" class="btn btn-primary">Postagens</a>
-    <a href="/usuario" class="btn btn-primary">Usuario</a>
+    {{#if usuarioId}}  <!-- Verifica se o usuário está logado -->
+        <a href="/post" class="btn btn-primary">Postagens</a>
+        <a href="/usuario" class="btn btn-primary">Usuários</a>
+    {{else}}
+        <p>Você precisa estar logado para acessar estas páginas.</p>
+    {{/if}}
 </div>

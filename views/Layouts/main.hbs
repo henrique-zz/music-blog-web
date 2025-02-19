@@ -106,7 +106,12 @@
                 <nav>
                     <ul>
                         {{#if usuarioId}}
-                        <li><a class="nav-link" href="/usuario/logout">Logout</a></li>
+                        <li><a class="nav-link" href="/usuario/logout" onclick="return confirmDelete()">Logout</a></li>
+                        <script>
+                            function confirmDelete() {
+                                return confirm("Você tem certeza que deseja fazer o logout?");
+                            }
+                        </script>
                         {{else}}
                         <li><a class="nav-link" href="/usuario/login">Login</a></li>
                         <li><a class="nav-link" href="/usuario/register">Criar Conta</a></li>

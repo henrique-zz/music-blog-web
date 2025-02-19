@@ -42,15 +42,13 @@ app.use((req, res, next) => {
 });
 
 function requireAuth(req, res, next) {
-    if (req.session.usuarioId) {
-        // Usuário está autenticado, continue
-        next();
-    } else {
-        // Usuário não está autenticado, redirecione para a página de login
+    if (!req.session || !req.session.usuarioId) {
         req.session.message = ["danger", "Você precisa estar logado para acessar esta página."];
-        res.redirect("/usuario/login");
+        return res.redirect("/usuario/login");
     }
+    next();
 }
+
 
 // Middleware - Utilizo um arquivo externo para definir as rotas WEB
 app.use(webRoutes);

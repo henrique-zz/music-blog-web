@@ -55,22 +55,3 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
--- -----------------------------------------------------
--- Data for table `blog_db`.`Usuario`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `blog_db`;
-INSERT INTO `blog_db`.`Usuario` (`id`, `nome`, `senha`, `seguidores`, `dataCriacao`) VALUES (1, 'Henrique', 'IFSC123', 45, '2024-02-03');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `blog_db`.`Post`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `blog_db`;
-INSERT INTO `blog_db`.`Post` (`id`, `album`, `texto`, `curtidas`, `dataPostagem`, `Usuario_id`) VALUES (1, 'Mezzanine', 'Nota 10/10 Faixa preferida: Risingson', 150, '2024-02-12', 1);
-
-COMMIT;
-

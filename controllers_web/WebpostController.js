@@ -77,7 +77,7 @@ class WebPostController {
                     album: "Erro ao carregar post.", 
                     texto: "Erro ao carregar post.", 
                     curtidas: 0, 
-                    dataPostagem: new Date().toISOString().split("T")[0] 
+                    dataPostagem: new Date() 
                 }, 
                 message: ["danger", "Erro ao carregar o post."] 
             });

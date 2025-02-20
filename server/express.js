@@ -35,6 +35,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
 app.use((req, res, next) => {
     res.locals.usuarioId = req.session.usuarioId || null;
     res.locals.usuarioNome = req.session.usuarioNome || null;

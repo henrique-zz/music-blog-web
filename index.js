@@ -1,5 +1,5 @@
 // O objetivo desse arquivo é ser o arquivo inicial do servidor
-const app = require("./server/express");
+const app = require("./backend/server/express");
 const port = app.get("port");
 
 

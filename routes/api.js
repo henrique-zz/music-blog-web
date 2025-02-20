@@ -1,6 +1,6 @@
 const express = require("express");
-const apiUsuarioController = require("../controllers_api/ApiUsuarioController");
-const apipostController = require("../controllers_api/ApipostController");
+const apiUsuarioController = require("../controllers/controllers_api/ApiUsuarioController");
+const apipostController = require("../controllers/controllers_api/ApipostController");
 const router = express.Router();
 
 // Rotas de post

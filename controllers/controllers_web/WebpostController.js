@@ -1,4 +1,4 @@
-const PostModel = require("../models/PostModel");
+const PostModel = require("../../models/PostModel");
 
 class WebPostController {
     // Mostra todos os posts
@@ -77,7 +77,7 @@ class WebPostController {
                     album: "Erro ao carregar post.", 
                     texto: "Erro ao carregar post.", 
                     curtidas: 0, 
-                    dataPostagem: new Date() 
+                    dataPostagem: new Date().toISOString().split("T")[0] 
                 }, 
                 message: ["danger", "Erro ao carregar o post."] 
             });

@@ -1,6 +1,6 @@
 // O objetivo desse arquivo é configurar o express
 const Crypto = require("crypto");
-const HbsConfigureCustomHelpers = require("../hbs_config/HbsConfigureCustomHelpers");
+const HbsConfigureCustomHelpers = require("../config/hbs_config/HbsConfigureCustomHelpers");
 const express = require("express");
 const methodOverride = require("method-override");
 const session = require("express-session");

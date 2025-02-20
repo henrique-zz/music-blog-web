@@ -1,4 +1,4 @@
-const PostModel = require("../models/PostModel");
+const PostModel = require("../../models/PostModel");
 
 /**
  * Controlador para gerenciar posts através de endpoints da API.

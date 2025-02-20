@@ -1,4 +1,4 @@
-const UsuarioModel = require("../models/UsuarioModel");
+const UsuarioModel = require("../../models/UsuarioModel");
 
 /**
  * Controlador para gerenciar usuarios através de endpoints da API.

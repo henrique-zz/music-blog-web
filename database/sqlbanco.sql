@@ -22,7 +22,7 @@ USE `blog_db` ;
 -- Table `blog_db`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `blog_db`.`Usuario` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` INT  NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL,
   `senha` VARCHAR(255) NULL,
   `seguidores` INT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `blog_db`.`Post` (
   `texto` VARCHAR(255) NULL,
   `curtidas` INT NULL,
   `dataPostagem` TIMESTAMP NULL,
-  `Usuario_id` INT UNSIGNED NOT NULL,
+  `Usuario_id` INT  NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Post_Usuario_idx` (`Usuario_id` ASC),
   CONSTRAINT `fk_Post_Usuario`

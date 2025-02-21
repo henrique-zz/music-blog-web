@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const webUsuarioController = require("../controllers/controllers_web/WebUsuarioController");
 const webpostController = require("../controllers/controllers_web/WebPostController");
-const connection = require("../database/db");
+const connection = require("../../database/db");
 
 router.get("/", async (request, response) => {
     response.render("index", { layout: "Layouts/main", title: "Página inicial" });

@@ -1,4 +1,4 @@
-const connection = require("../database/db");
+const connection = require("../../database/db");
 
 class PostModel {
     // Busca todos os posts
